@@ -21,7 +21,7 @@ items = [
     {'id':  2, 'name': 'Item Two'}
 ]
 
-@app.route('/items', methods=['GET'])
+@app.route('/', methods=['GET'])
 def get_items():
     return jsonify(items)
 
@@ -85,8 +85,8 @@ def generate_recipe():
 
 #image classificaiton route form vit image classificaiton model
    
-food_classification_model = "google/vit-base-patch16-224-in21k"
-# food_classification_model = "./food-image-classification"
+#food_classification_model = "google/vit-base-patch16-224-in21k"
+food_classification_model = "./food-image-classification"
 
 
 # Load image processor and model
@@ -127,5 +127,5 @@ def classify_image():
 
 
 if __name__ == "__main__":
-    app.run(debug=True,port=int(os.environ.get('PORT', 8000)))
+    app.run(host="0.0.0.0",debug=True,port=int(os.environ.get('PORT', 8000)))
 

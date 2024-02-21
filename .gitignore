@@ -1,1 +1,4 @@
-.venv
+/venv
+/controlled-food-recipe-generation
+/food-image-classification
+
