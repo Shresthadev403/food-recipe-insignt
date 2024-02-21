@@ -126,6 +126,41 @@ def classify_image():
         return jsonify({'predicted_label': predicted_label})
 
 
+#ingredients detection
+    
+# import the inference-sdk
+from inference_sdk import InferenceHTTPClient
+
+# initialize the client
+CLIENT = InferenceHTTPClient(
+    api_url="http://detect.roboflow.com",
+    api_key="8EIKJcvUIKxxHckmX4XK"
+)
+
+@app.route('/detect_ingredients', methods=['POST'])
+def classify_image():
+    if request.method == 'POST':
+        # Check if the request contains an image file
+        if 'image' not in request.files:
+            return jsonify({'error': 'No image provided'})
+        
+         # Read the image file
+        image_file = request.files['image']
+
+        try:
+            image_data=image_file.read()
+            # print(image_file,"this is email file")
+            image_pil=Image.open(image_file)
+        except Exception as e:
+          print(e,"this is error")
+          return 'Failed to read or convert the image to PIL FORMAT', 400
+        
+        # infer on a local image
+        result = CLIENT.infer(image_pil, model_id="food-ingredients-detection-6ce7j/1")
+
+        # Return the predicted label
+        return jsonify({'predicted_label': result})
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0",debug=True,port=int(os.environ.get('PORT', 8000)))
 
